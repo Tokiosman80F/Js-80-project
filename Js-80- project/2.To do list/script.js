@@ -1,59 +1,68 @@
-// DEFINING UI ELEMENT
-let form = document.querySelector("#task-form");
-let taskList = document.querySelector("ul");
-let clearBtn = document.querySelector("#clear-task-btn");
-let filter = document.querySelector("#task-filter");
-let taskInput = document.querySelector("#new-task");
+//DEFINING ELEMNT
+let form = document.getElementById("task_form");
+let taskInput = document.getElementById("new_task");
+let filter = document.getElementById("task_filter");
+// ul
+let taskList = document.getElementById("tasks");
+// btn
+let clearBtn = document.getElementById("clear_task_btn");
 
-// DEFINE EVENT LISTENER
+// DEFINING EVENT LISTENER
 form.addEventListener("submit", addTask);
 taskList.addEventListener("click", removeTask);
 clearBtn.addEventListener("click", clearTask);
 filter.addEventListener("keyup", filterTask);
+// getting the data from local storage and showing in Display
 document.addEventListener("DOMContentLoaded", getTask);
 
 // DEFINE FUNCTION
-function addTask(event) {
-  if (taskInput.value === " ") {
-    alert("Add a task");
+
+// ADD TASK
+function addTask(e) {
+  if (taskInput.value === "") {
+    alert("add a task");
   } else {
-    //CREATING LI(LIST)
-    let li = document.createElement("li");
-    li.appendChild(document.createTextNode(taskInput.value + " "));
-    taskList.appendChild(li);
-    // CREATING CROSS x
+    // Create List
+    let list = document.createElement("li");
+    list.appendChild(document.createTextNode(taskInput.value + " "));
+
+    taskList.appendChild(list);
+
+    // Creating a link
     let link = document.createElement("a");
     link.setAttribute("href", "#");
-    link.innerHTML = "x";
-    li.appendChild(link);
+    link.textContent = "X";
+    list.appendChild(link);
 
-    // LOCAL STORAGE
+    // local storage
     storeTaskInLocalStorage(taskInput.value);
-    // CLEARING INPUT FEILD
-    taskInput.value = " ";
+
+    taskInput.value = "";
   }
-  event.preventDefault();
+  e.preventDefault();
 }
 
 // REMOVE TASK
-function removeTask(event) {
-  if (event.target.hasAttribute("href")) {
-    if (confirm("Are you sure?")) {
-      let element = event.target.parentElement;
-      element.remove();
-      console.log(element);
+function removeTask(e) {
+  if (e.target.hasAttribute("href")) {
+    if (confirm("Are you sure ?")) {
+      let ele = e.target.parentElement;
+      ele.remove();
+      // REMOVE FROM LS
+      removeFromLS(ele);
     }
   }
 }
 
 // CLEAR TASK
-function clearTask() {
-  taskList.remove();
+function clearTask(e) {
+  taskList.textContent = " ";
+  localStorage.clear();
 }
 
 // FILTER TASK
-function filterTask(event) {
-  let text = event.target.value.toLowerCase();
+function filterTask(e) {
+  let text = e.target.value.toLowerCase();
   document.querySelectorAll("li").forEach((task) => {
     let item = task.firstChild.textContent;
     if (item.toLowerCase().indexOf(text) != -1) {
@@ -62,39 +71,57 @@ function filterTask(event) {
       task.style.display = "none";
     }
   });
-  // console.log(text);
 }
 
-// STORE IN LOCAL STORE
-
-function storeTaskInLocalStorage(work) {
+// LOCAL STORAGE
+function storeTaskInLocalStorage(task) {
   let tasks;
-  //  CALLING LOCAL STORAGE
-  if (localStorage.getItem("work") === null) {
+  if (localStorage.getItem("tasks") === null) {
     tasks = [];
   } else {
-    tasks = JSON.parse(localStorage.getItem(tasks));
+    tasks = JSON.parse(localStorage.getItem("tasks"));
   }
-  tasks.push(work);
+  tasks.push(task);
   localStorage.setItem("tasks", JSON.stringify(tasks));
 }
 
+// getting the data from local storage and showing in Display
 function getTask() {
   let tasks;
-  //  CALLING LOCAL STORAGE
-  if (localStorage.getItem("task") === null) {
+  if (localStorage.getItem("tasks") === null) {
     tasks = [];
   } else {
-    tasks = JSON.parse(localStorage.getItem(tasks));
+    tasks = JSON.parse(localStorage.getItem("tasks"));
   }
-  tasks.forEach((work) => {
-    let li = document.createElement("li");
-    li.appendChild(document.createTextNode(work + " "));
-    taskList.appendChild(li);
-    // CREATING CROSS x
+
+  tasks.forEach((task) => {
+    // Create List
+    let list = document.createElement("li");
+    list.appendChild(document.createTextNode(task + " "));
+
+    // Creating a link
     let link = document.createElement("a");
     link.setAttribute("href", "#");
-    link.innerHTML = "x";
-    li.appendChild(link);
+    link.textContent = "X";
+    list.appendChild(link);
+    taskList.appendChild(list);
   });
+}
+
+//REMOVE FROM LOCAL STORAGE(LS)
+function removeFromLS(taskItem) {
+  let tasks;
+  if (localStorage.getItem("tasks") === null) {
+    tasks = [];
+  } else {
+    tasks = JSON.parse(localStorage.getItem("tasks"));
+  }
+  let li = taskItem;
+  li.removeChild(li.lastChild);
+  tasks.forEach((task, index) => {
+    if (li.textContent.trim() === task) {
+      tasks.splice(index, 1);
+    }
+  });
+  localStorage.setItem("tasks", JSON.stringify(tasks));
 }
