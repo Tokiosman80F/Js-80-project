@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <label for="">1st number</label>
+    <input type="text" id="input1" />
+    <br />
+    <br />
+    <label for="">2nd number</label>
+    <input type="text" id="input2" />
+    <br /><br />
+    <button id="mul">Multiply</button>
+    <button id="div">Divide</button>
+  </body>
+
+  <script>
+    let mul = document.getElementById("mul");
+    let divi = document.getElementById("div");
+
+    mul.addEventListener("click", multiply);
+    divi.addEventListener("click", divide);
+
+    function multiply() {
+      let valueOne = document.getElementById("input1").value;
+      let valueTwo = document.getElementById("input2").value;
+      let h3 = document.createElement("h3");
+      console.log(h3);
+      result = valueOne * valueTwo;
+      h3.innerHTML = `the result is ${result}`;
+    }
+
+    function divide() {
+      let valueOne = document.getElementById("input1").value;
+      let valueTwo = document.getElementById("input2").value;
+      let h3 = document.createElement("h3");
+      console.log(h3);
+      result = valueOne / valueTwo;
+      h3.innerHTML = `the result is ${result}`;
+      document.appendChild(h3);
+    }
+  </script>
+</html>
