@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <!-- google font  -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kaushan+Script&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: sans-serif;
+      font-size: 40px;
+      background-color: azure;
+    }
+    h2 {
+      font-family: "Kaushan Script", cursive;
+    }
+    .container {
+      width: 100%;
+      height: 500px;
+      display: grid;
+      align-content: center;
+      justify-content: center;
+    }
+  </style>
+  <body>
+    <!-- DATE AND TIME -->
+    <div class="container">
+      <h2>Show Day And Time</h2>
+      <p>Today is : <span id="span1"></span></p>
+      <br />
+      <p>Time is=> <span id="span2"></span></p>
+
+      <p>todays date <span id="span3"></span></p>
+    </div>
+  </body>
+
+  <script>
+    let today = new Date();
+
+    let currentDay = [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ];
+
+    let hour = today.getHours();
+    let minute = today.getMinutes();
+    let second = today.getSeconds();
+    let mm = today.getMonth();
+    let dd = today.getDate();
+    let yy = today.getFullYear();
+
+    dd = dd > 10 ? "0" + dd : dd;
+    mm = mm > 10 ? "0" + mm : mm;
+    console.log(`${dd}-${mm}-${yy}`);
+
+    let showDate = document.querySelector("#span3");
+    showDate.textContent = `${dd}-${mm}-${yy}`;
+
+    var prepand = hour > 12 ? "PM" : "AM";
+
+    // hour
+    hour = hour >= 12 ? hour - 12 : hour;
+
+    if (minute < 10) {
+      minute = "0" + minute;
+    }
+    second = second < 10 ? "0" + second : second;
+    // console.log(currentDay[day.getDay()]);
+    let showDay = document.getElementById("span1");
+    showDay.textContent = `${currentDay[today.getDay()]}`;
+
+    let showTime = document.getElementById("span2");
+    showTime.textContent = `${hour} ${prepand} :${minute}:${second}`;
+    console.log(`${hour} ${prepand} :${minute}:${second}`);
+  </script>
+</html>
