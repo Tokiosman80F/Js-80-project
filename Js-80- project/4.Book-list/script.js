@@ -31,6 +31,18 @@ class Table {
     document.getElementById("author").value = " ";
     document.getElementById("isbn").value = " ";
   }
+  showAlert(message, className) {
+    let div = document.createElement("div");
+    div.className = `alert ${className}`;
+    div.appendChild(document.createTextNode(message));
+    let container = document.querySelector(".container");
+    let form = document.querySelector("#book-form");
+    container.insertBefore(div, form);
+
+    setTimeout(function () {
+      document.querySelector(".alert").remove();
+    }, 3000);
+  }
 }
 //ADD-EVENT LISENTER
 form.addEventListener("submit", newBook);
@@ -41,13 +53,19 @@ function newBook(e) {
   let title = document.getElementById("title").value;
   let author = document.getElementById("author").value;
   let isbn = document.getElementById("isbn").value;
-
-  let book = new Book(title, author, isbn);
-  //   console.log(book);
-
-  //   table  class
   let table = new Table();
-  table.addToBookList(book);
-  table.clear();
+  if (title === " " || author === " " || isbn === " ") {
+    table.showAlert("please fill all the feild", "error");
+  } else {
+    let book = new Book(title, author, isbn);
+    //   console.log(book);
+
+    //   table  class
+    let table = new Table();
+    table.addToBookList(book);
+    table.clear();
+    table.showAlert("Book added!", "success");
+  }
+
   e.preventDefault();
 }
